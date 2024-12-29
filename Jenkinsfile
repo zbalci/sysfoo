@@ -54,9 +54,9 @@ mvn versions:commit'''
           agent any
           steps {
             script {
-              docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
+              docker.withRegistry('https://hub.zekibalci.com/v1/', 'docker-registry') {
                 def commitHash = env.GIT_COMMIT.take(7)
-                def dockerImage = docker.build("initcron/sysfoo:${commitHash}", "./")
+                def dockerImage = docker.build("hub.zekibalci.com/sysfoo:${commitHash}", "./")
                 dockerImage.push()
                 dockerImage.push("latest")
                 dockerImage.push("dev")
