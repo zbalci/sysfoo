@@ -3,10 +3,24 @@ pipeline {
   stages {
     stage('build') {
       agent {
-        docker {
-          image 'maven:3.9.6-eclipse-temurin-17-alpine'
+        kubernetes {
+          label 'maven-build-pod'  // The label for the pod
+          defaultContainer 'maven'  // Container name (defined below)
+          yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: sysfoo
+spec:
+  containers:
+  - name: maven
+    image: maven:3.9.6-eclipse-temurin-17-alpine
+    command:
+    - cat
+    tty: true
+"""
         }
-
       }
       steps {
         echo 'compiling sysfoo app...'
@@ -16,10 +30,24 @@ pipeline {
 
     stage('test') {
       agent {
-        docker {
-          image 'maven:3.9.6-eclipse-temurin-17-alpine'
+        kubernetes {
+          label 'maven-build-pod'
+          defaultContainer 'maven'
+          yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: sysfoo
+spec:
+  containers:
+  - name: maven
+    image: maven:3.9.6-eclipse-temurin-17-alpine
+    command:
+    - cat
+    tty: true
+"""
         }
-
       }
       steps {
         echo 'running unit tests...'
@@ -32,10 +60,24 @@ pipeline {
       parallel {
         stage('package') {
           agent {
-            docker {
-              image 'maven:3.9.6-eclipse-temurin-17-alpine'
+            kubernetes {
+              label 'maven-build-pod'
+              defaultContainer 'maven'
+              yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: sysfoo
+spec:
+  containers:
+  - name: maven
+    image: maven:3.9.6-eclipse-temurin-17-alpine
+    command:
+    - cat
+    tty: true
+"""
             }
-
           }
           steps {
             echo 'packaging the app...'
@@ -62,7 +104,6 @@ mvn versions:commit'''
                 dockerImage.push("dev")
               }
             }
-
           }
         }
 
@@ -77,6 +118,5 @@ mvn versions:commit'''
     always {
       echo 'This pipeline is completed..'
     }
-
   }
 }
