@@ -3,6 +3,8 @@
 
 A Devops Learning App useful for CI Implementation
 
+Zeki Balcı
+
 
 ## About the Application
 
