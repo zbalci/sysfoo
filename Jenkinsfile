@@ -4,8 +4,8 @@ pipeline {
     stage('build') {
       agent {
         kubernetes {
-          label 'maven-build-pod'
-          defaultContainer 'maven'
+          label 'maven-build-pod'  // The label for the pod
+          defaultContainer 'maven'  // Container name (defined below)
           yaml """
 apiVersion: v1
 kind: Pod
@@ -24,20 +24,7 @@ spec:
       }
       steps {
         echo 'compiling sysfoo app...'
-        sh 'git status'
         sh 'mvn compile'
-      }
-      post {
-        success {
-          echo 'Build succeeded'
-          // Notify GitHub of build success
-          githubNotify context: 'build', status: 'SUCCESS', description: 'Build succeeded'
-        }
-        failure {
-          echo 'Build failed'
-          // Notify GitHub of build failure
-          githubNotify context: 'build', status: 'FAILURE', description: 'Build failed'
-        }
       }
     }
 
