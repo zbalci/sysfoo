@@ -15,7 +15,7 @@ metadata:
 spec:
   containers:
   - name: maven
-    image: maven:3.9.6-eclipse-temurin-17-alpine
+    image: hub.zekibalci.com/maven-with-git:latest
     command:
     - cat
     tty: true
@@ -42,7 +42,7 @@ metadata:
 spec:
   containers:
   - name: maven
-    image: maven:3.9.6-eclipse-temurin-17-alpine
+    image: hub.zekibalci.com/maven-with-git:latest
     command:
     - cat
     tty: true
