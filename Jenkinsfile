@@ -59,8 +59,15 @@ spec:
     maven 'Maven 3.9.6'
   }
   post {
-    always {
-      echo 'This pipeline is completed..'
-    }
+  	success {
+  	  echo 'Tests passed'
+  	  // Notify GitHub of test success
+  	  githubNotify context: 'test', status: 'SUCCESS', description: 'Tests passed'
+  	}
+  	failure {
+  	  echo 'Tests failed'
+  	  // Notify GitHub of test failure
+  	  githubNotify context: 'test', status: 'FAILURE', description: 'Tests failed'
+  	}
   }
 }
