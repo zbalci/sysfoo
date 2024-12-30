@@ -62,32 +62,35 @@ spec:
   post {
     success {
       script {
-        echo "Sending GitHub status for success..."
-        sh '''
-        curl -X POST -H "Authorization: token $TOKEN" \
-             -H "Content-Type: application/json" \
-             -d '{
-               "state": "success",
-               "description": "Build completed successfully",
-               "context": "Jenkins CI"
-             }' \
-             https://api.github.com/repos/zbalci/sysfoo/statuses/$(git rev-parse HEAD)
-        '''
+        // GitHub Status gönderimi
+        withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GITHUB_USER', passwordVariable: 'GITHUB_TOKEN')]) {
+          sh '''
+          curl -X POST -u "${GITHUB_USER}:${GITHUB_TOKEN}" \
+               -H "Content-Type: application/json" \
+               -d '{
+                 "state": "success",
+                 "description": "Build completed successfully",
+                 "context": "Jenkins CI"
+               }' \
+               https://api.github.com/repos/zbalci/sysfoo/statuses/$(git rev-parse HEAD)
+          '''
+        }
       }
     }
     failure {
       script {
-        echo "Sending GitHub status for failure..."
-        sh '''
-        curl -X POST -H "Authorization: token $TOKEN" \
-             -H "Content-Type: application/json" \
-             -d '{
-               "state": "failure",
-               "description": "Build failed",
-               "context": "Jenkins CI"
-             }' \
-             https://api.github.com/repos/zbalci/sysfoo/statuses/$(git rev-parse HEAD)
-        '''
+        withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GITHUB_USER', passwordVariable: 'GITHUB_TOKEN')]) {
+          sh '''
+          curl -X POST -u "${GITHUB_USER}:${GITHUB_TOKEN}" \
+               -H "Content-Type: application/json" \
+               -d '{
+                 "state": "failure",
+                 "description": "Build failed",
+                 "context": "Jenkins CI"
+               }' \
+               https://api.github.com/repos/zbalci/sysfoo/statuses/$(git rev-parse HEAD)
+          '''
+        }
       }
     }
   }  
