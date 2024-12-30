@@ -65,11 +65,11 @@ spec:
   post {
     success {
         // Commit status 'success' olarak ayarlanır
-        setGitHubCommitStatus context: 'build', status: 'SUCCESS', description: 'Build başarılı'
+        setGitHubPullRequestStatus context: 'build', message: 'Build başarılı', state: 'SUCCESS'
     }
     failure {
         // Commit status 'failure' olarak ayarlanır
-        setGitHubCommitStatus context: 'build', status: 'FAILURE', description: 'Build başarısız'
+        setGitHubPullRequestStatus context: 'build', message: 'Build başarısız', state: 'FAILURE'
     }
   }  
 }
