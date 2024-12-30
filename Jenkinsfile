@@ -61,15 +61,5 @@ spec:
   }
   tools {
     maven 'Maven 3.9.6'
-  }
-  post {
-    success {
-        // Commit status 'success' olarak ayarlanır
-        setGitHubPullRequestStatus context: 'build', message: 'Build başarılı', state: 'SUCCESS'
-    }
-    failure {
-        // Commit status 'failure' olarak ayarlanır
-        setGitHubPullRequestStatus context: 'build', message: 'Build başarısız', state: 'FAILURE'
-    }
-  }  
+  } 
 }
