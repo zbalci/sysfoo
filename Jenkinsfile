@@ -66,18 +66,6 @@ spec:
         echo 'running unit tests...'
         sh 'mvn clean test'
       }
-      post {
-        success {
-          echo 'Tests passed'
-          // Notify GitHub of test success
-          githubNotify context: 'test', status: 'SUCCESS', description: 'Tests passed'
-        }
-        failure {
-          echo 'Tests failed'
-          // Notify GitHub of test failure
-          githubNotify context: 'test', status: 'FAILURE', description: 'Tests failed'
-        }
-      }
     }
   }
   tools {
