@@ -19,6 +19,8 @@ spec:
     command:
     - cat
     tty: true
+  imagePullSecrets:
+    - name: registrykey
 """
         }
       }
@@ -46,6 +48,8 @@ spec:
     command:
     - cat
     tty: true
+  imagePullSecrets:
+    - name: registrykey    
 """
         }
       }
@@ -57,17 +61,5 @@ spec:
   }
   tools {
     maven 'Maven 3.9.6'
-  }
-  post {
-  	success {
-  	  echo 'Tests passed'
-  	  // Notify GitHub of test success
-  	  githubNotify context: 'test', status: 'SUCCESS', description: 'Tests passed'
-  	}
-  	failure {
-  	  echo 'Tests failed'
-  	  // Notify GitHub of test failure
-  	  githubNotify context: 'test', status: 'FAILURE', description: 'Tests failed'
-  	}
-  }
+  } 
 }
