@@ -64,7 +64,7 @@ spec:
       script {
         echo "Sending GitHub status for success..."
         sh '''
-        curl -X POST -H "Authorization: token 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" \
+        curl -X POST -H "Authorization: token $TOKEN" \
              -H "Content-Type: application/json" \
              -d '{
                "state": "success",
@@ -79,7 +79,7 @@ spec:
       script {
         echo "Sending GitHub status for failure..."
         sh '''
-        curl -X POST -H "Authorization: token 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" \
+        curl -X POST -H "Authorization: token $TOKEN" \
              -H "Content-Type: application/json" \
              -d '{
                "state": "failure",
