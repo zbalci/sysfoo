@@ -63,15 +63,13 @@ spec:
     maven 'Maven 3.9.6'
   }
   post {
-  	success {
-  	  echo 'Tests passed'
-  	  // Notify GitHub of test success
-  	  githubNotify context: 'test', status: 'SUCCESS', description: 'Tests passed'
-  	}
-  	failure {
-  	  echo 'Tests failed'
-  	  // Notify GitHub of test failure
-  	  githubNotify context: 'test', status: 'FAILURE', description: 'Tests failed'
-  	}
-  }
+    success {
+        // Commit status 'success' olarak ayarlanır
+        setGitHubCommitStatus context: 'build', status: 'SUCCESS', description: 'Build başarılı'
+    }
+    failure {
+        // Commit status 'failure' olarak ayarlanır
+        setGitHubCommitStatus context: 'build', status: 'FAILURE', description: 'Build başarısız'
+    }
+  }  
 }
