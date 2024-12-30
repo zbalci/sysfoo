@@ -19,6 +19,8 @@ spec:
     command:
     - cat
     tty: true
+  imagePullSecrets:
+    - name: registrykey
 """
         }
       }
@@ -46,6 +48,8 @@ spec:
     command:
     - cat
     tty: true
+  imagePullSecrets:
+    - name: registrykey    
 """
         }
       }
