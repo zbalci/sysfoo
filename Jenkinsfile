@@ -1,5 +1,5 @@
 pipeline {
-  agent none
+  agent any
   stages {
     stage('build') {
       agent {
@@ -59,6 +59,41 @@ spec:
       }
     }
   }
+  post {
+    success {
+      script {
+        // GitHub Status gönderimi
+        withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GITHUB_USER', passwordVariable: 'GITHUB_TOKEN')]) {
+          sh '''
+          curl -X POST -u "${GITHUB_USER}:${GITHUB_TOKEN}" \
+               -H "Content-Type: application/json" \
+               -d '{
+                 "state": "success",
+                 "description": "Build completed successfully",
+                 "context": "Jenkins CI"
+               }' \
+               https://api.github.com/repos/zbalci/sysfoo/statuses/$(git rev-parse HEAD)
+          '''
+        }
+      }
+    }
+    failure {
+      script {
+        withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GITHUB_USER', passwordVariable: 'GITHUB_TOKEN')]) {
+          sh '''
+          curl -X POST -u "${GITHUB_USER}:${GITHUB_TOKEN}" \
+               -H "Content-Type: application/json" \
+               -d '{
+                 "state": "failure",
+                 "description": "Build failed",
+                 "context": "Jenkins CI"
+               }' \
+               https://api.github.com/repos/zbalci/sysfoo/statuses/$(git rev-parse HEAD)
+          '''
+        }
+      }
+    }
+  }  
   tools {
     maven 'Maven 3.9.6'
   } 
